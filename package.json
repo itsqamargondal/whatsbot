@@ -1,0 +1,16 @@
+{
+  "name": "wabot",
+  "version": "1.0.0",
+  "description": "This is a whatsapp bot created by Qamar Gondal and you can use it free of cost for your own bussines.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Qamar Gondal",
+  "license": "ISC",
+  "dependencies": {
+    "qrcode": "^1.5.3",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.21.0"
+  }
+}

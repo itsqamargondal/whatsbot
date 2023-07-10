@@ -1,0 +1,146 @@
+const { Client } = require('whatsapp-web.js');
+const qrcodeTerminal = require('qrcode-terminal');
+const client = new Client();
+let isFirstMessage = true;
+let stage = 0;
+
+client.on('qr', async (qrCode) => {
+  console.log('Scan the QR code to authenticate:');
+  await qrcodeTerminal.generate(qrCode, { small: true });
+});
+
+client.on('message', async (message) => {
+    // Ignore messages sent by the bot itself
+    if (message.fromMe) {
+      return;
+    }
+// Handle incoming messages and send replies
+  if (isFirstMessage) {
+    isFirstMessage = false;
+    if (message.body.toUpperCase() === 'MAIN') {
+      return;
+    }
+    await sendWelcomeMessage(message);
+    return;
+  }
+  switch (stage) {
+    case 0:
+      // Handle stage 0 replies
+      if (message.body === '1') {
+        await sendServiceOptionsMessage(message);
+        stage = 1;
+      } else if (message.body === '2') {
+        await sendCourseOptionsMessage(message);
+        stage = 2;
+      } else if (message.body === '3') {
+        await sendHelpMessage(message);
+        stage = 3;
+      } else {
+        await sendInvalidOptionMessage(message);
+      }
+      break;
+    case 1:
+      // Handle stage 1 replies
+      if (message.body === 'MAIN') {
+        await sendMainMenuMessage(message);
+        stage = 0;
+      } else {
+        if (message.body === '1') {
+          await message.reply('*2D ANIMATION VIDEO* \n Our talented team of animators brings your ideas to life through captivating 2D animations. Whether you need an explainer video, character animation, or product showcase, we create visually stunning and engaging videos that leave a lasting impression. \n Here is our portfolio of 2D ANIMATION VIDEO \n https://services.skillcrowed.com/animation-video/ \n \n *If you want to know about the price, please click on the following link:* \n https://services.skillcrowed.com/get-price/ \n \n *Reply with "MAIN" to go back to the main menu.*');
+        } else if (message.body === '2') {
+          await message.reply('*MARKETING VIDEO* \n Our marketing videos are designed to captivate your audience and convey your brand\'s message effectively. We combine compelling visuals, persuasive storytelling, and strategic messaging to create videos that drive engagement, increase conversions, and boost your brand\'s visibility. \n Here is our portfolio \n https://services.skillcrowed.com/marketing-videos/ \n \n *If you want to know about the price, please click on the following link:* \n https://services.skillcrowed.com/get-price/ \n \n *Reply with "MAIN" to go back to the main menu.*');
+        } else if (message.body === '3') {
+          await message.reply('*Marketing Video* \n Our expert video editors transform raw footage into polished masterpieces. We understand the importance of seamless transitions, compelling visual effects, and precise timing. From corporate videos to social media content, we deliver high-quality edits that enhance your videos and make them stand out. \n Here is our portfolio \n https://services.skillcrowed.com/video-editing/ \n \n *If you want to know about the price, please click on the following link:* \n https://services.skillcrowed.com/get-price/ \n \n *Reply with "MAIN" to go back to the main menu.*');
+        } else if (message.body === '4') {
+          await message.reply('*Website Development* \n We build responsive and user-friendly websites that are tailored to your business goals. Our skilled web developers use the latest technologies to create visually stunning designs, intuitive navigation, and seamless functionality. We ensure that your website represents your brand effectively and delivers an exceptional user experience. \n Here is our portfolio \n https://services.skillcrowed.com/web-development/ \n \n *If you want to know about the price, please click on the following link:* \n https://services.skillcrowed.com/get-price/ \n \n *Reply with "MAIN" to go back to the main menu.*');
+        } else if (message.body === '5') {
+          await message.reply('*App Development* \n Our app development team specializes in creating mobile applications that are both visually appealing and highly functional. We work closely with you to understand your requirements and develop customized solutions. Our apps are optimized for performance, security, and user engagement, providing a seamless experience across different platforms. \n Here is our portfolio \n https://services.skillcrowed.com/app-development/ \n \n *If you want to know about the price, please click on the following link:* \n https://services.skillcrowed.com/get-price/ \n \n *Reply with "MAIN" to go back to the main menu.*');
+        } else if (message.body === '6') {
+          await message.reply('*Graphic Design* \n Our creative graphic designers bring your ideas to life through stunning visuals. From logos and branding to print and digital assets, we craft designs that are visually striking, memorable, and aligned with your brand identity. Whether you need a complete brand overhaul or a single design element, we create designs that leave a lasting impression. \n Here is our portfolio \n https://services.skillcrowed.com/graphic-design/ \n \n *If you want to know about the price, please click on the following link:* \n https://services.skillcrowed.com/get-price/ \n \n *Reply with "MAIN" to go back to the main menu.*');
+        } else if (message.body === '7') {
+          await message.reply('*SEO (Search Engine Optimization)* \n Our SEO experts optimize your website to improve its visibility on search engines, driving organic traffic and increasing your online presence. We employ proven strategies including keyword research, on-page optimization, link building, and content optimization to help your website rank higher in search results and attract targeted visitors. \n Here is our portfolio \n https://services.skillcrowed.com/seo/ \n \n *If you want to know about the price, please click on the following link:* \n https://services.skillcrowed.com/get-price/ \n \n *Reply with "MAIN" to go back to the main menu.*');
+        } else if (message.body === '8') {
+          await message.reply('*Script Writing* \n Our skilled scriptwriters create compelling and engaging scripts that effectively convey your message. Whether it\'s for a video, commercial, or any other medium, we craft scripts that capture your audience\'s attention, evoke emotions, and deliver your key points with impact. Our scripts are tailored to your brand\'s voice and objectives. \n Here is our portfolio \n https://services.skillcrowed.com/script-writing/ \n \n *If you want to know about the price, please click on the following link:* \n https://services.skillcrowed.com/get-price/ \n \n *Reply with "MAIN" to go back to the main menu.*');
+        } else if (message.body === '9') {
+          await message.reply('*Voice Over* \n Our professional voice-over artists add depth and personality to your videos. With a wide range of voices and accents to choose from, we ensure that the voice-over perfectly complements your content and resonates with your target audience. Our voice-over services enhance the overall quality and impact of your videos. \n Here is our portfolio \n https://services.skillcrowed.com/voice-over/ \n \n *If you want to know about the price, please click on the following link:* \n https://services.skillcrowed.com/get-price/ \n \n *Reply with "MAIN" to go back to the main menu.*');
+        } else if (message.body === '10') {
+          await message.reply('*Article Writing* \n Our skilled writers create well-researched and engaging articles that cater to your target audience. We cover a wide range of topics and writing styles, delivering articles that inform, educate, and entertain your readers. From blog posts to industry-specific articles, our writing services help you establish thought leadership and drive engagement. \n Here is our portfolio \n https://services.skillcrowed.com/article-writing/ \n \n *If you want to know about the price, please click on the following link:* \n https://services.skillcrowed.com/get-price/ \n \n *Reply with "MAIN" to go back to the main menu.*');
+        } else {
+          await sendInvalidOptionMessage(message);
+        }
+      }
+      break;
+    case 2:
+      // Handle stage 2 replies
+      // Add your logic for stage 2 responses
+      break;
+    case 3:
+      // Handle stage 3 replies
+      // Add your logic for stage 3 responses
+      break;
+    default:
+      // Handle unrecognized stages or errors
+      break;
+  }
+});
+
+async function sendWelcomeMessage(message) {
+  await message.reply(`Welcome to *SkillCrowed* WhatsApp ChatBot!\nTo start, reply with the desired number from the following options:\n\n1. What services are you providing?\n2. What courses are you providing?\n3. I need help.\n\n*Note:* Reply with the corresponding number to get the information you need.`);
+  stage = 0;
+}
+
+async function sendMainMenuMessage(message) {
+  await message.reply(`Welcome back to the main menu! Please reply with the desired number from the following options:\n\n1. What services are you providing?\n2. What courses are you providing?\n3. I need help.\n\n*Note:* Reply with the corresponding number to get the information you need.`);
+  stage = 0;
+}
+
+async function sendServiceOptionsMessage(message) {
+  await message.reply(`We provide a wide range of services including:\n\n1. 2D Animation video\n2. Marketing Video\n3. Video Editing\n4. Website Development\n5. App Development\n6. Graphic Design\n7. SEO (Search Engine Optimization)\n8. Script Writing\n9. Voice Over\n10. Article Writing\n\n*Reply with "MAIN" to go back to the main menu.*\n\nIf you need more detail about any specific service, reply with the desired number. For example, if you need more details about "2D Animation video," reply with 1, and so on.`);
+  stage = 1;
+}
+
+async function sendCourseOptionsMessage(message) {
+  await message.reply(`We offer various courses such as:\n\n1. Freelancing Complete course\n2. Youtube Crash Course\n3. Web Development\n4. Graphic design\n5. Artificial Intelligence\n6. Video Editing\n\n*Reply with "MAIN" to go back to the main menu.*\n\nIf you need more detail about any specific course, reply with the desired number. For example, if you need more details about the "Freelancing Complete course," reply with 1, and so on.`);
+  stage = 2;
+}
+
+async function sendHelpMessage(message) {
+  await message.reply(`Sure, I'm here to help! Please let me know what you need assistance with, and I'll do my best to provide guidance.`);
+  stage = 3;
+}
+
+async function sendInvalidOptionMessage(message) {
+  let errorMessage = '';
+
+  switch (stage) {
+    case 0:
+      errorMessage = 'I\'m sorry, but I couldn\'t understand your message. Please reply with a valid option number or let me know how I can assist you.\n\n1. What services are you providing?\n2. What courses are you providing?\n3. I need help.\n\n*Note:* Reply with the corresponding number to get the information you need.';
+      break;
+    case 1:
+      errorMessage = 'I\'m sorry, but I couldn\'t understand your message. Please reply with a valid service option number or reply with "MAIN" to go back to the main menu.';
+      break;
+    case 2:
+      errorMessage = 'I\'m sorry, but I couldn\'t understand your message. Please reply with a valid course option number or reply with "MAIN" to go back to the main menu.';
+      break;
+    case 3:
+      errorMessage = 'I\'m sorry, but I couldn\'t understand your message. How else can I assist you?';
+      break;
+    default:
+      errorMessage = 'I\'m sorry, but I couldn\'t understand your message. How else can I assist you?';
+      break;
+  }
+
+  await message.reply(errorMessage);
+}
+
+client.initialize().then(() => {
+  console.log('Bot initialized');
+}).catch((error) => {
+  console.error('An error occurred during initialization:', error);
+});
+
+process.on('SIGINT', async () => {
+  console.log('Shutting down the bot...');
+  await client.destroy();
+  process.exit(0);
+});
