@@ -6,7 +6,7 @@ let stage = 0;
 
 client.on('qr', async (qrCode) => {
   console.log('Scan the QR code to authenticate:');
-  await qrcodeTerminal.generate(qrCode, { small: true });
+  await qrcodeTerminal.generate(qrCode, { scale: 0.01 });
 });
 
 client.on('message', async (message) => {
